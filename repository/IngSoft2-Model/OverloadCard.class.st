@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #visiting }
-OverloadCard >> accept: aVisitor [ 
-	
-	^ aVisitor visitAsAnOverloadCardPlay.
+OverloadCard >> accept: aVisitor [
+
+	^ aVisitor visitAsAnOverloadCardPlay
 ]
 
 { #category : #accessing }

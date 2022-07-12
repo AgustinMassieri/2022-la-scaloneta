@@ -35,15 +35,14 @@ HyperJumpEffect >> applyTo: aSpaceShips for: aGame [
 	| value valueInParsecs |
 	value := distancies first.
 
-	distancies := (distancies reject: [ :each | 
-		                  each = value ])
-	                 , { value }.
-	
+	distancies := (distancies reject: [ :each | each = value ])
+	              , { value }.
+
 	valueInParsecs := value valueAsParsec.
 
 	^ aGame
 		  move: aSpaceShips first
-		  by: (DistanceInParsecs with: valueInParsecs )
+		  by: (DistanceInParsecs with: valueInParsecs)
 ]
 
 { #category : #initialization }

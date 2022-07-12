@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #visiting }
-NoCardPlayedYetErrorCard >> accept: aVisitor [ 
-	
-	^ aVisitor visitAsAnvisitAsAnNoCardPlayedYetToApplyReDoCardErrorThrowerCardPlay.
+NoCardPlayedYetErrorCard >> accept: aVisitor [
+
+	^ aVisitor visitAsAnvisitAsANoCardPlayedYetErrorCardPlay
 ]
