@@ -54,7 +54,8 @@ LaScalonetaGame >> applyEffectDependingOnWhetherTheSpaceShipWonOrNot: aSpaceShip
 { #category : #private }
 LaScalonetaGame >> applyTileEffectTo: aSpaceShips [
 
-	lastTilePlayed := board effectAt: (self positionOf: turnsSequence spaceShipPlaying).
+	lastTilePlayed := board effectAt:
+		                  (self positionOf: turnsSequence spaceShipPlaying).
 	lastTilePlayed applyTo: aSpaceShips for: self
 ]
 
@@ -68,15 +69,15 @@ LaScalonetaGame >> assertGameHasNotEnded [
 { #category : #asserting }
 LaScalonetaGame >> assertIsTurnOf: aSpaceShip [
 
-	^ turnsSequence assertSpaceShipTurn: aSpaceShip.
+	^ turnsSequence assertSpaceShipTurn: aSpaceShip
 ]
 
 { #category : #accessing }
 LaScalonetaGame >> cardsHandOf: aSpaceShip [
 
 	| spaceShipCardsHand |
-	spaceShipCardsHand := cardHands
-		detect: [ :handler | handler spaceShip = aSpaceShip ].
+	spaceShipCardsHand := cardHands detect: [ :handler | 
+		                      handler spaceShip = aSpaceShip ].
 	^ spaceShipCardsHand
 ]
 
@@ -96,9 +97,12 @@ LaScalonetaGame >> decksHasToBeRedistributed [
 LaScalonetaGame >> giveCardFromDeckTo: aSpaceShip [
 
 	discardDeck
-		ifNotEmpty: [ (self cardsHandOf: aSpaceShip) addToHand: mainDeck pick]
-		ifEmpty: [ Error signal: 'It is not possible to pick a card until DiscardDeck it is not empty!' ].
-		
+		ifNotEmpty: [ 
+		(self cardsHandOf: aSpaceShip) addToHand: mainDeck pick ]
+		ifEmpty: [ 
+			Error signal:
+				'It is not possible to pick a card until DiscardDeck it is not empty!' ].
+
 	self redistributeDecks
 ]
 
@@ -121,7 +125,7 @@ LaScalonetaGame >> initializeWith: aBoard rolling: aDiceCollection playedBy: aSp
 	cardHands := aSpaceShips collect: [ :spaceShip | 
 		             CardsHand with: spaceShip using: aDeck ].
 	lastTilePlayed := NoEffect new.
-	cardPlayResolver := CardPlayResolver with: self.
+	cardPlayResolver := CardPlayResolver with: self
 ]
 
 { #category : #accessing }
@@ -177,9 +181,8 @@ LaScalonetaGame >> positionOf: aSpaceShip [
 { #category : #action }
 LaScalonetaGame >> redistributeDecks [
 
-	self decksHasToBeRedistributed
-		ifFalse: [ ^ self ].
-	
+	self decksHasToBeRedistributed ifFalse: [ ^ self ].
+
 	mainDeck := Deck with: discardDeck.
 	discardDeck := OrderedCollection new
 ]
@@ -190,7 +193,6 @@ LaScalonetaGame >> removeFromHand: aCard to: aSpaceShip [
 	(self cardsHandOf: aSpaceShip) removeFromHand: aCard.
 	discardDeck add: aCard.
 	self redistributeDecks
-	
 ]
 
 { #category : #private }
@@ -209,7 +211,7 @@ LaScalonetaGame >> spaceShips [
 LaScalonetaGame >> spaceShipsPositionsRanking [
 
 	| spaceShipsPositions |
-	spaceShipsPositions := (self spaceShips) collect: [ :aSpaceShip | 
+	spaceShipsPositions := self spaceShips collect: [ :aSpaceShip | 
 		                       self positionOf: aSpaceShip ].
 
 	^ spaceShipsPositions asSortedCollection: [ :spaceShipA :spaceShipB | 
@@ -220,6 +222,7 @@ LaScalonetaGame >> spaceShipsPositionsRanking [
 LaScalonetaGame >> winner [
 
 	self hasEnded
-		ifFalse: [ Error signal: 'There is no winner as the game has not ended yet.' ]
+		ifFalse: [ 
+		Error signal: 'There is no winner as the game has not ended yet.' ]
 		ifTrue: [ ^ self spaceShipsPositionsRanking first spaceShip ]
 ]

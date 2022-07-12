@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #visiting }
-CancellationCard >> accept: aVisitor [ 
-	
-	^ aVisitor visitAsACancellationCardPlay.
+CancellationCard >> accept: aVisitor [
+
+	^ aVisitor visitAsACancellationCardPlay
 ]

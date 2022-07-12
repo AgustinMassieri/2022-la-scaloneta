@@ -55,7 +55,7 @@ CardsHand >> initializeWith: aSpaceShip using: aDeck [
 	self distributeCardsFrom: aDeck
 ]
 
-{ #category : #removing }
+{ #category : #action }
 CardsHand >> removeEffectOf: aCard [
 
 	cardsAffecting remove: aCard ifAbsent: [ 

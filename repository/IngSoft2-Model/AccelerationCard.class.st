@@ -5,13 +5,13 @@ Class {
 }
 
 { #category : #visiting }
-AccelerationCard >> accept: aVisitor [ 
-	
-	^ aVisitor visitAsAnAccelerationCardPlay.
+AccelerationCard >> accept: aVisitor [
+
+	^ aVisitor visitAsAnAccelerationCardPlay
 ]
 
 { #category : #accessing }
 AccelerationCard >> effect [
 
-	^ 1.
+	^ 1
 ]

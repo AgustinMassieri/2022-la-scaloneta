@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #visiting }
-SpeedCard >> accept: aVisitor [ 
-	
-	^ aVisitor visitAsASpeedCardPlay.
+SpeedCard >> accept: aVisitor [
+
+	^ aVisitor visitAsASpeedCardPlay
 ]
 
 { #category : #accessing }

@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #visiting }
-ReDoCard >> accept: aVisitor [ 
-	
-	^ aVisitor visitAsAReDoCardPlay.
+ReDoCard >> accept: aVisitor [
+
+	^ aVisitor visitAsAReDoCardPlay
 ]

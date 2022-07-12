@@ -24,9 +24,8 @@ CardPlayResolver >> initializeWith: aGame [
 
 { #category : #resolving }
 CardPlayResolver >> resolve: aCardPlay [
-	
-	cardPlay := aCardPlay.
 
+	cardPlay := aCardPlay.
 	^ aCardPlay card accept: self
 ]
 
@@ -63,7 +62,6 @@ CardPlayResolver >> visitAsACancellationCardPlay [
 		cardsHand removeEffectOf: target ].
 	lastCardPlayed := card.
 	game removeFromHand: card to: playedBy
-
 ]
 
 { #category : #visiting }
@@ -75,7 +73,10 @@ CardPlayResolver >> visitAsAReDoCardPlay [
 	card := cardPlay card.
 
 	self validate: playedBy has: card.
-	newCardPlay := CardPlay with: lastCardPlayed appliedTo: target by: playedBy.
+	newCardPlay := CardPlay
+		               with: lastCardPlayed
+		               appliedTo: target
+		               by: playedBy.
 	game apply: newCardPlay.
 	game removeFromHand: card to: playedBy
 ]
@@ -117,7 +118,8 @@ CardPlayResolver >> visitAsAnAccelerationCardPlay [
 
 	game assertIsTurnOf: playedBy.
 	self validate: playedBy has: card.
-	game spaceShips do: [ :aSpaceship | (game cardsHandOf: aSpaceship) addEffectOf: card ].
+	game spaceShips do: [ :aSpaceship | 
+		(game cardsHandOf: aSpaceship) addEffectOf: card ].
 	lastCardPlayed := card.
 	game removeFromHand: card to: playedBy
 ]
@@ -138,7 +140,7 @@ CardPlayResolver >> visitAsAnOverloadCardPlay [
 ]
 
 { #category : #visiting }
-CardPlayResolver >> visitAsAnvisitAsAnNoCardPlayedYetToApplyReDoCardErrorThrowerCardPlay [
+CardPlayResolver >> visitAsAnvisitAsANoCardPlayedYetErrorCardPlay [
 
 	Error signal:
 		'No card played yet!'

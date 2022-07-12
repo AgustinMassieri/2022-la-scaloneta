@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #visiting }
-RepeatCard >> accept: aVisitor [ 
-	
-	^ aVisitor visitAsARepeatCardPlay.
+RepeatCard >> accept: aVisitor [
+
+	^ aVisitor visitAsARepeatCardPlay
 ]
