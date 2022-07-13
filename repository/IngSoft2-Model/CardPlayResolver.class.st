@@ -49,15 +49,16 @@ CardPlayResolver >> validateIfIsPossibleToCancellACard: cardsHandCollection [
 { #category : #validating }
 CardPlayResolver >> validateTargetIsAPermanentCard: aCard [
 
-	aCard isPermanent ifFalse: [ Error signal: 'Can not apply a Speed Boost Card to a no permanent card!' ]
-	
-	
+	aCard isPermanent ifFalse: [ 
+		Error signal:
+			'Can not apply a Speed Boost Card to a no permanent card!' ]
 ]
 
 { #category : #visiting }
 CardPlayResolver >> visitAsACancellationCardPlay [
 
 	| filteredCardsHandsCollection playedBy target card |
+	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
@@ -76,6 +77,7 @@ CardPlayResolver >> visitAsACancellationCardPlay [
 CardPlayResolver >> visitAsAReDoCardPlay [
 
 	| newCardPlay playedBy target card |
+	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
@@ -93,6 +95,7 @@ CardPlayResolver >> visitAsAReDoCardPlay [
 CardPlayResolver >> visitAsARepeatCardPlay [
 
 	| playedBy card |
+	
 	playedBy := cardPlay playedBy.
 	card := cardPlay card.
 
@@ -106,31 +109,28 @@ CardPlayResolver >> visitAsARepeatCardPlay [
 CardPlayResolver >> visitAsASpeedBoostCardPlay [
 
 	| playedBy target card filteredCardsHandsCollection |
+	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
-	
+
 	self validateTargetIsAPermanentCard: target.
 	self validate: playedBy has: card.
-	
+
 	filteredCardsHandsCollection := game cardsHands select: [ :cardsHand | 
 		                                cardsHand affectsSpaceShip: target ].
-	
+
 	filteredCardsHandsCollection do: [ :cardsHand | 
 		cardsHand addEffectOf: target ].
 	
-	
-
-	
-	
-	
-	
+	game removeFromHand: card to: playedBy
 ]
 
 { #category : #visiting }
 CardPlayResolver >> visitAsASpeedCardPlay [
 
 	| playedBy target card |
+	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
@@ -146,6 +146,7 @@ CardPlayResolver >> visitAsASpeedCardPlay [
 CardPlayResolver >> visitAsAnAccelerationCardPlay [
 
 	| playedBy card |
+	
 	playedBy := cardPlay playedBy.
 	card := cardPlay card.
 
@@ -161,6 +162,7 @@ CardPlayResolver >> visitAsAnAccelerationCardPlay [
 CardPlayResolver >> visitAsAnOverloadCardPlay [
 
 	| playedBy target card |
+	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
