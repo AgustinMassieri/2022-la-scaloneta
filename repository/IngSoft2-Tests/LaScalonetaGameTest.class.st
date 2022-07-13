@@ -260,7 +260,7 @@ LaScalonetaGameTest >> testHyperJumpEffectDistancesCanNotBeEmpty [
 { #category : #tests }
 LaScalonetaGameTest >> testJorgeAndJulianMovesFowardThreeTilesButThenAfterJulianApplyACancellationCardToTheAccelerationCardThatJorgeAppliedTheyOnlyMoveFowardTwoTiles [
 
-	| aGame aBoard aDie1 aDie2 aDiceCup aCancellationCard anAccelerationCard aDeck cardPlay cardPlay1 |
+	| aGame aBoard aDie aCancellationCard anAccelerationCard aDeck cardPlay cardPlay1 |
 	
 	aBoard := Board
 		          with: { 
@@ -272,12 +272,7 @@ LaScalonetaGameTest >> testJorgeAndJulianMovesFowardThreeTilesButThenAfterJulian
 		          and: 12
 		          finishingAfter: 2.
 		
-	aDie1 := LoadedDie with: 1.
-	aDie2 := LoadedDie with: 1.
-
-	aDiceCup := DiceCup withAll: { 
-			            aDie1.
-			            aDie2}.
+	aDie := LoadedDie with: 2.
 			
 	aCancellationCard := CancellationCard new.
 	anAccelerationCard := AccelerationCard  new.
@@ -287,7 +282,7 @@ LaScalonetaGameTest >> testJorgeAndJulianMovesFowardThreeTilesButThenAfterJulian
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
-		         rolling: aDiceCup
+		         rolling: aDie
 		         usingCardsFrom: aDeck.
 		
 	
@@ -962,6 +957,93 @@ LaScalonetaGameTest >> testJorgeMovesForwardThreeParsecsWhenLandingOnAHyperJumpE
 ]
 
 { #category : #tests }
+LaScalonetaGameTest >> testJorgeMovesFowardFourTilesAfterApplyingAnAccelerationCardAndASpeedBoostCardToTheSpeedCardAndThenJulianMovesFowardOnlyTwoTilesAsHeIsNotUnderTheEffectOfTheCardsThatHadBeenPlayed [
+	
+	| aGame aBoard aDie aSpeedBoostCard aSpeedCard aDeck cardPlay cardPlay1 |
+	
+	aBoard := Board
+		          with: { 
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new }
+		          and: 12
+		          finishingAfter: 2.
+		
+	aDie := LoadedDie with: 2.
+
+	aSpeedBoostCard := SpeedBoostCard new.
+	aSpeedCard := SpeedCard new.
+	
+	aDeck := LoadedDeck with: {aSpeedBoostCard. aSpeedCard. aSpeedBoostCard. aSpeedCard}.
+
+	aGame := LaScalonetaGame
+		         playedBy: { 'Jorge'. 'Julian' }
+		         on: aBoard
+		         rolling: aDie
+		         usingCardsFrom: aDeck.
+	
+	cardPlay := CardPlay with: aSpeedCard appliedTo: 'Jorge' by: 'Jorge'.
+	aGame apply: cardPlay.
+				
+	cardPlay1 := CardPlay with: aSpeedBoostCard appliedTo: aSpeedCard by: 'Jorge'.
+	aGame apply: cardPlay1. 
+	
+	aGame playNextTurn.	
+	aGame playNextTurn.
+
+	self assert: 'Jorge' isAt: 5 with: 1 in: aGame.
+	self assert: 'Julian' isAt: 3 with: 1 in: aGame.
+]
+
+{ #category : #tests }
+LaScalonetaGameTest >> testJorgeMovesFowardFourTilesButHeDoesNotMoveFowardInHisNextTurnAsHeIsUnderTheEffectOfAnOverloadCardAndASpeedBoostCardThrownByJulian [
+	
+	| aGame aBoard aDie aSpeedBoostCard anOverloadCard aDeck cardPlay cardPlay1 |
+	
+	aBoard := Board
+		          with: { 
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new }
+		          and: 12
+		          finishingAfter: 2.
+		
+	aDie := LoadedDie with: 4.
+
+	aSpeedBoostCard := SpeedBoostCard new.
+	anOverloadCard := OverloadCard new.
+	
+	aDeck := LoadedDeck with: {aSpeedBoostCard. anOverloadCard. aSpeedBoostCard. anOverloadCard}.
+
+	aGame := LaScalonetaGame
+		         playedBy: { 'Jorge'. 'Julian' }
+		         on: aBoard
+		         rolling: aDie
+		         usingCardsFrom: aDeck.
+	
+	aGame playNextTurn.
+	
+	self assert: 'Jorge' isAt: 5 with: 1 in: aGame.
+	
+	cardPlay := CardPlay with: anOverloadCard appliedTo: 'Jorge' by: 'Julian'.
+	aGame apply: cardPlay.
+	
+	cardPlay1 := CardPlay with: aSpeedBoostCard appliedTo: anOverloadCard by: 'Julian'.
+	aGame apply: cardPlay1. 
+		
+	aGame playNextTurn.
+	aGame playNextTurn.
+
+	self assert: 'Jorge' isAt: 5 with: 1 in: aGame.
+	self assert: 'Julian' isAt: 5 with: 1 in: aGame.
+	
+]
+
+{ #category : #tests }
 LaScalonetaGameTest >> testJorgeMovesFowardThreeParsecsAndThenJulianMovesFowardTwoParsecsSinceTheyBothLandedOnAHyperJumpEffectAndThreeAndTwoWhereTheFirstDistancesValues [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
@@ -1036,6 +1118,55 @@ LaScalonetaGameTest >> testJorgeMovesFowardThreeParsecsThenJulianMovesFowardTwoP
 	aGame playNextTurn.
 
 	self assert: 'Hernan' isAt: 2 with: 2 in: aGame
+]
+
+{ #category : #tests }
+LaScalonetaGameTest >> testJorgeMovesFowardThreeTilesAfterApplyingAnAccelerationCardButJulianMovesFowardFourTilesBecauseHeAppliedASpeedBoostCardToTheAccelerationCard [
+	
+	| aGame aBoard aDie aSpeedBoostCard anAccelerationCard aDeck cardPlay cardPlay1 |
+	
+	aBoard := Board
+		          with: { 
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new }
+		          and: 12
+		          finishingAfter: 2.
+		
+	aDie := LoadedDie with: 2.
+
+	aSpeedBoostCard := SpeedBoostCard new.
+	anAccelerationCard := AccelerationCard new.
+	
+	aDeck := LoadedDeck with: {aSpeedBoostCard. anAccelerationCard. aSpeedBoostCard. anAccelerationCard}.
+
+	aGame := LaScalonetaGame
+		         playedBy: { 'Jorge'. 'Julian' }
+		         on: aBoard
+		         rolling: aDie
+		         usingCardsFrom: aDeck.
+	
+	cardPlay := CardPlay with: anAccelerationCard appliedBy: 'Jorge'.
+	aGame apply: cardPlay.
+				
+	aGame playNextTurn.
+	
+	cardPlay1 := CardPlay with: aSpeedBoostCard appliedTo: anAccelerationCard by: 'Julian'.
+	aGame apply: cardPlay1. 
+		
+	aGame playNextTurn.
+
+	self assert: 'Jorge' isAt: 4 with: 1 in: aGame.
+	self assert: 'Julian' isAt: 5 with: 1 in: aGame.
+	
+	aGame playNextTurn.
+	aGame playNextTurn.
+	
+	self assert: 'Jorge' isAt: 3 with: 2 in: aGame.
+	self assert: 'Julian' isAt: 4 with: 2 in: aGame.
+	
 ]
 
 { #category : #tests }
@@ -1331,7 +1462,7 @@ LaScalonetaGameTest >> testJulianDoesNotGoBackFurtherThanFirstPositionOfFirstLap
 { #category : #tests }
 LaScalonetaGameTest >> testJulianGetsACancellationCardAndGetsRidOfSpeedCard [
 
-	| aGame aBoard aDie1 aDie2 aDiceCup aCancellationCard aSpeedCard aDeck cardPlay cardPlay1 |
+	| aGame aBoard aDie aCancellationCard aSpeedCard aDeck cardPlay cardPlay1 |
 	
 	aBoard := Board
 		          with: { 
@@ -1343,12 +1474,7 @@ LaScalonetaGameTest >> testJulianGetsACancellationCardAndGetsRidOfSpeedCard [
 		          and: 12
 		          finishingAfter: 2.
 		
-	aDie1 := LoadedDie with: 1.
-	aDie2 := LoadedDie with: 1.
-
-	aDiceCup := DiceCup withAll: { 
-			            aDie1.
-			            aDie2}.
+	aDie := LoadedDie with: 2.
 			
 	aCancellationCard := CancellationCard new.
 	aSpeedCard := SpeedCard new.
@@ -1358,7 +1484,7 @@ LaScalonetaGameTest >> testJulianGetsACancellationCardAndGetsRidOfSpeedCard [
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
-		         rolling: aDiceCup
+		         rolling: aDie
 		         usingCardsFrom: aDeck.
 	
 	cardPlay := CardPlay with: aSpeedCard appliedTo: 'Julian' by: 'Jorge'.
@@ -1385,7 +1511,6 @@ LaScalonetaGameTest >> testJulianGetsACancellationCardAndGetsRidOfSpeedCard [
 LaScalonetaGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnSpeedCardAndPlaysIt [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aReDoCard aSpeedCard aDeck cardPlay cardPlay1 |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -1395,37 +1520,52 @@ LaScalonetaGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnSpeedCardAndPlays
 				          NoEffect new }
 		          and: 12
 		          finishingAfter: 2.
-		
+
 	aDie1 := LoadedDie with: 1.
 	aDie2 := LoadedDie with: 1.
 
 	aDiceCup := DiceCup withAll: { 
 			            aDie1.
-			            aDie2}.
-			
+			            aDie2 }.
+
 	aReDoCard := ReDoCard new.
 	aSpeedCard := SpeedCard new.
-	
-	aDeck := LoadedDeck with: {aSpeedCard. aReDoCard. aSpeedCard. aReDoCard}.
+
+	aDeck := LoadedDeck with: { 
+			         aSpeedCard.
+			         aReDoCard.
+			         aSpeedCard.
+			         aReDoCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDiceCup
 		         usingCardsFrom: aDeck.
-	
+
 	cardPlay := CardPlay with: aSpeedCard appliedTo: 'Jorge' by: 'Jorge'.
 	aGame apply: cardPlay.
-				
-	aGame playNextTurn.
-	
-	cardPlay1 := CardPlay with: aReDoCard appliedTo: 'Julian' by: 'Julian'.
-	aGame apply: cardPlay1. 
-		
+
 	aGame playNextTurn.
 
-	self assert: 'Jorge' isAt: 4 with: 1 in: aGame.
-	self assert: 'Julian' isAt: 4 with: 1 in: aGame.
+	cardPlay1 := CardPlay
+		             with: aReDoCard
+		             appliedTo: 'Julian'
+		             by: 'Julian'.
+	aGame apply: cardPlay1.
+
+	aGame playNextTurn.
+
+	self
+		assert: 'Jorge'
+		isAt: 4
+		with: 1
+		in: aGame.
+	self
+		assert: 'Julian'
+		isAt: 4
+		with: 1
+		in: aGame
 ]
 
 { #category : #tests }
@@ -1719,4 +1859,180 @@ LaScalonetaGameTest >> testSpaceShipStartsAtTileNumberOneAndLapNumberOne [
 
 	self assert: 'Jorge' isAt: 1 with: 1 in: aGame.
 	self assert: 'Julian' isAt: 1 with: 1 in: aGame.
+]
+
+{ #category : #tests }
+LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToACancellationCard [
+
+	| aGame aBoard aDie aSpeedBoostCard aCancellationCard aDeck cardPlay |
+	aBoard := Board
+		          with: { 
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new }
+		          and: 12
+		          finishingAfter: 2.
+
+	aDie := LoadedDie with: 2.
+
+	aSpeedBoostCard := SpeedBoostCard new.
+	aCancellationCard := CancellationCard new.
+
+	aDeck := LoadedDeck with: { 
+			         aSpeedBoostCard.
+			         aCancellationCard.
+			         aSpeedBoostCard.
+			         aCancellationCard }.
+
+	aGame := LaScalonetaGame
+		         playedBy: { 'Jorge'. 'Julian' }
+		         on: aBoard
+		         rolling: aDie
+		         usingCardsFrom: aDeck.
+
+
+	cardPlay := CardPlay
+		            with: aSpeedBoostCard
+		            appliedTo: aCancellationCard
+		            by: 'Julian'.
+
+	self
+		should: [ aGame apply: cardPlay ]
+		raise: Error
+		withMessage:
+		'Can not apply a Speed Boost Card to a no permanent card!'
+]
+
+{ #category : #tests }
+LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToAReDoCard [
+
+	| aGame aBoard aDie aSpeedBoostCard aReDoCard aDeck cardPlay |
+	aBoard := Board
+		          with: { 
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new }
+		          and: 12
+		          finishingAfter: 2.
+
+	aDie := LoadedDie with: 2.
+
+	aSpeedBoostCard := SpeedBoostCard new.
+	aReDoCard := ReDoCard new.
+
+	aDeck := LoadedDeck with: { 
+			         aSpeedBoostCard.
+			         aReDoCard.
+			         aSpeedBoostCard.
+			         aReDoCard }.
+
+	aGame := LaScalonetaGame
+		         playedBy: { 'Jorge'. 'Julian' }
+		         on: aBoard
+		         rolling: aDie
+		         usingCardsFrom: aDeck.
+
+
+	cardPlay := CardPlay
+		            with: aSpeedBoostCard
+		            appliedTo: aReDoCard
+		            by: 'Julian'.
+
+	self
+		should: [ aGame apply: cardPlay ]
+		raise: Error
+		withMessage:
+		'Can not apply a Speed Boost Card to a no permanent card!'
+]
+
+{ #category : #tests }
+LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToARepeatCard [
+
+	| aGame aBoard aDie aSpeedBoostCard aRepeatCard aDeck cardPlay |
+	aBoard := Board
+		          with: { 
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new }
+		          and: 12
+		          finishingAfter: 2.
+
+	aDie := LoadedDie with: 2.
+
+	aSpeedBoostCard := SpeedBoostCard new.
+	aRepeatCard := RepeatCard new.
+
+	aDeck := LoadedDeck with: { 
+			         aSpeedBoostCard.
+			         aRepeatCard.
+			         aSpeedBoostCard.
+			         aRepeatCard }.
+
+	aGame := LaScalonetaGame
+		         playedBy: { 'Jorge'. 'Julian' }
+		         on: aBoard
+		         rolling: aDie
+		         usingCardsFrom: aDeck.
+
+
+	cardPlay := CardPlay
+		            with: aSpeedBoostCard
+		            appliedTo: aRepeatCard
+		            by: 'Julian'.
+
+	self
+		should: [ aGame apply: cardPlay ]
+		raise: Error
+		withMessage:
+		'Can not apply a Speed Boost Card to a no permanent card!'
+]
+
+{ #category : #tests }
+LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToAnotherSpeedBoostCard [
+
+	| aGame aBoard aDie aSpeedBoostCard anotherSpeedBoostCard aDeck cardPlay |
+	aBoard := Board
+		          with: { 
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new.
+				          NoEffect new }
+		          and: 12
+		          finishingAfter: 2.
+
+	aDie := LoadedDie with: 2.
+
+	aSpeedBoostCard := SpeedBoostCard new.
+	anotherSpeedBoostCard := SpeedBoostCard new.
+
+	aDeck := LoadedDeck with: { 
+			         aSpeedBoostCard.
+			         anotherSpeedBoostCard.
+			         aSpeedBoostCard.
+			         anotherSpeedBoostCard }.
+
+	aGame := LaScalonetaGame
+		         playedBy: { 'Jorge'. 'Julian' }
+		         on: aBoard
+		         rolling: aDie
+		         usingCardsFrom: aDeck.
+
+
+	cardPlay := CardPlay
+		            with: aSpeedBoostCard
+		            appliedTo: anotherSpeedBoostCard
+		            by: 'Julian'.
+
+	self
+		should: [ aGame apply: cardPlay ]
+		raise: Error
+		withMessage:
+		'Can not apply a Speed Boost Card to a no permanent card!'
 ]

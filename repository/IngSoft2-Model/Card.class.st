@@ -7,5 +7,11 @@ Class {
 { #category : #visiting }
 Card >> accept: aVisitor [
 
-	self subclassResponsibility.
+	self subclassResponsibility
+]
+
+{ #category : #testing }
+Card >> isPermanent [
+
+	^ false
 ]

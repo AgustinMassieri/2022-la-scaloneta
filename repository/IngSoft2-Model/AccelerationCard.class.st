@@ -15,3 +15,9 @@ AccelerationCard >> effect [
 
 	^ 1
 ]
+
+{ #category : #testing }
+AccelerationCard >> isPermanent [
+	
+	^ true
+]
