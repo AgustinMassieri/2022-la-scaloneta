@@ -15,3 +15,9 @@ SpeedCard >> effect [
 
 	^ 1
 ]
+
+{ #category : #testing }
+SpeedCard >> isPermanent [
+	
+	^ true
+]

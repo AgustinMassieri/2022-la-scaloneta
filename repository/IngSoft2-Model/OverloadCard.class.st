@@ -15,3 +15,9 @@ OverloadCard >> effect [
 
 	^ -2
 ]
+
+{ #category : #testing }
+OverloadCard >> isPermanent [
+	
+	^ true
+]

@@ -46,6 +46,14 @@ CardPlayResolver >> validateIfIsPossibleToCancellACard: cardsHandCollection [
 		Error signal: 'There is no CardsHand with the card to be removed' ]
 ]
 
+{ #category : #validating }
+CardPlayResolver >> validateTargetIsAPermanentCard: aCard [
+
+	aCard isPermanent ifFalse: [ Error signal: 'Can not apply a Speed Boost Card to a no permanent card!' ]
+	
+	
+]
+
 { #category : #visiting }
 CardPlayResolver >> visitAsACancellationCardPlay [
 
@@ -92,6 +100,31 @@ CardPlayResolver >> visitAsARepeatCardPlay [
 	game lastTilePlayed applyTo: game spaceShips for: game.
 	lastCardPlayed := card.
 	game removeFromHand: card to: playedBy
+]
+
+{ #category : #visiting }
+CardPlayResolver >> visitAsASpeedBoostCardPlay [
+
+	| playedBy target card filteredCardsHandsCollection |
+	playedBy := cardPlay playedBy.
+	target := cardPlay target.
+	card := cardPlay card.
+	
+	self validateTargetIsAPermanentCard: target.
+	self validate: playedBy has: card.
+	
+	filteredCardsHandsCollection := game cardsHands select: [ :cardsHand | 
+		                                cardsHand affectsSpaceShip: target ].
+	
+	filteredCardsHandsCollection do: [ :cardsHand | 
+		cardsHand addEffectOf: target ].
+	
+	
+
+	
+	
+	
+	
 ]
 
 { #category : #visiting }

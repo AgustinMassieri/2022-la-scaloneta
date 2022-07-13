@@ -58,9 +58,8 @@ CardsHand >> initializeWith: aSpaceShip using: aDeck [
 { #category : #action }
 CardsHand >> removeEffectOf: aCard [
 
-	cardsAffecting remove: aCard ifAbsent: [ 
-		Error signal:
-			'There is no card at cardsThatAffect that matches to be removed' ]
+	cardsAffecting := cardsAffecting reject: [ :each | 
+		                  each = aCard ]
 ]
 
 { #category : #action }
