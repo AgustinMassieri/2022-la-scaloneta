@@ -21,3 +21,9 @@ AccelerationCard >> isPermanent [
 	
 	^ true
 ]
+
+{ #category : #creating }
+AccelerationCard >> playBy: aSpaceShip [
+
+	^ CardPlay with: self appliedBy: 'Jorge'.
+]

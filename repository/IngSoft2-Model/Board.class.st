@@ -26,17 +26,17 @@ Board class >> assertValidNumberOfTiles: aTileCollection [
 { #category : #asserting }
 Board class >> assertValidParsecs: parsecs [
 
-	parsecs > 0 ifFalse: [ 
+	(parsecs valueAsParsec) > 0 ifFalse: [ 
 		Error signal: 'Parsecs must be greater than 0!' ]
 ]
 
 { #category : #'instance creation' }
-Board class >> with: tiles and: parsecs finishingAfter: laps [
+Board class >> with: tiles and: aDistance finishingAfter: laps [
 
 	self assertValidNumberOfTiles: tiles.
 	self assertValidNumberOfLaps: laps.
-	self assertValidParsecs: parsecs.
-	^ self new initializeWith: tiles and: parsecs finishingAfter: laps
+	self assertValidParsecs: aDistance.
+	^ self new initializeWith: tiles and: aDistance finishingAfter: laps
 ]
 
 { #category : #converting }
@@ -61,10 +61,10 @@ Board >> firstTileNumber [
 ]
 
 { #category : #initialization }
-Board >> initializeWith: aTiles and: aParsecs finishingAfter: aLaps [
+Board >> initializeWith: aTiles and: aDistance finishingAfter: aLaps [
 
 	tiles := aTiles.
-	parsecs := aParsecs.
+	parsecs := aDistance valueAsParsec.
 	laps := aLaps
 ]
 

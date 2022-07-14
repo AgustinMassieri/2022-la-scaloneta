@@ -1,7 +1,7 @@
 Extension { #name : #Board }
 
 { #category : #'*IngSoft2-Tests' }
-Board class >> withNoEffectsOf: numberOfTiles and: parsecs finishingAfter: laps [
+Board class >> withNoEffectsOf: numberOfTiles and: aDistance finishingAfter: laps [
 
 	| noEffect tiles |
 	noEffect := NoEffect new.
@@ -10,7 +10,7 @@ Board class >> withNoEffectsOf: numberOfTiles and: parsecs finishingAfter: laps 
 
 	self assertValidNumberOfTiles: tiles.
 	self assertValidNumberOfLaps: laps.
-	self assertValidParsecs: parsecs.
+	self assertValidParsecs: aDistance.
 
-	^ self new initializeWith: tiles and: parsecs finishingAfter: laps
+	^ self new initializeWith: tiles and: aDistance finishingAfter: laps
 ]

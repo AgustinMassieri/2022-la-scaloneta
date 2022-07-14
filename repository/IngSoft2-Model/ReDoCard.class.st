@@ -9,3 +9,9 @@ ReDoCard >> accept: aVisitor [
 
 	^ aVisitor visitAsAReDoCardPlay
 ]
+
+{ #category : #creating }
+ReDoCard >> playBy: aSpaceShip targetting: aCard [
+
+	^ CardPlay with: self appliedTo: aCard by: aSpaceShip
+]

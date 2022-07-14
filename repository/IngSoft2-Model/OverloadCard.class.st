@@ -21,3 +21,9 @@ OverloadCard >> isPermanent [
 	
 	^ true
 ]
+
+{ #category : #creating }
+OverloadCard >> playBy: aSpaceShip targetting: anotherSpaceShip [
+
+	^ CardPlay with: self appliedTo: anotherSpaceShip by: aSpaceShip
+]
