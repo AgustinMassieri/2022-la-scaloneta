@@ -9,3 +9,9 @@ SpeedBoostCard >> accept: aVisitor [
 
 	^ aVisitor visitAsASpeedBoostCardPlay
 ]
+
+{ #category : #creating }
+SpeedBoostCard >> playBy: aSpaceShip targetting: aCard [
+
+	^ CardPlay with: self appliedTo: aCard by: aSpaceShip
+]

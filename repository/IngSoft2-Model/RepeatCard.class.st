@@ -9,3 +9,9 @@ RepeatCard >> accept: aVisitor [
 
 	^ aVisitor visitAsARepeatCardPlay
 ]
+
+{ #category : #creating }
+RepeatCard >> playBy: aSpaceShip [
+
+	^ CardPlay with: self appliedBy: aSpaceShip.
+]

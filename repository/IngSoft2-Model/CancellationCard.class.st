@@ -9,3 +9,9 @@ CancellationCard >> accept: aVisitor [
 
 	^ aVisitor visitAsACancellationCardPlay
 ]
+
+{ #category : #creating }
+CancellationCard >> playBy: aSpaceShip targetting: aCard [
+
+	^ CardPlay with: self appliedTo: aCard by: aSpaceShip
+]

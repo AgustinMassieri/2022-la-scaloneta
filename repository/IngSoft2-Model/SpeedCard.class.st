@@ -21,3 +21,9 @@ SpeedCard >> isPermanent [
 	
 	^ true
 ]
+
+{ #category : #creating }
+SpeedCard >> playBy: aSpaceShip targetting: anotherSpaceShip [
+
+	^ CardPlay with: self appliedTo: anotherSpaceShip by: aSpaceShip
+]
