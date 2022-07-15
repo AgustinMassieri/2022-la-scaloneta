@@ -10,12 +10,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-CardPlay class >> with: aCard appliedBy: aSpaceShip [
-
-	^ self new initializeWith: aCard appliedBy: aSpaceShip.
-]
-
-{ #category : #'instance creation' }
 CardPlay class >> with: aCard appliedTo: aTarget by: aSpaceShip [
 
 	^ self new initializeWith: aCard appliedTo: aTarget by: aSpaceShip.
@@ -25,13 +19,6 @@ CardPlay class >> with: aCard appliedTo: aTarget by: aSpaceShip [
 CardPlay >> card [
 
 	^ card
-]
-
-{ #category : #initialization }
-CardPlay >> initializeWith: aCard appliedBy: aSpaceShip [
-
-	card := aCard.
-	playedBy := aSpaceShip
 ]
 
 { #category : #initialization }

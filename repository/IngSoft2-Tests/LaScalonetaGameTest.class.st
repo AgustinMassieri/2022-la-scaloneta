@@ -51,19 +51,25 @@ LaScalonetaGameTest >> playUntilFinished: aGame [
 LaScalonetaGameTest >> testAskingForTheWinnerWhenTheGameHasNotEndedThrowsAnErrorMessage [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-	
-	aBoard := Board withNoEffectsOf: 4 and: (DistanceInParsecs with: 4) finishingAfter: 2.
+	aBoard := Board
+		          withNoEffectsOf: 4
+		          and: (DistanceInParsecs with: 4)
+		          finishingAfter: 2.
 	aDie1 := LoadedDie with: 1.
-	
+
 	anAccelerationCard := AccelerationCard new.
 
-	aDeck := Deck with: {anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard}.
+	aDeck := Deck with: { 
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDie1
-					usingCardsFrom: aDeck.
+		         usingCardsFrom: aDeck.
 
 	self deny: aGame hasEnded.
 
@@ -77,7 +83,6 @@ LaScalonetaGameTest >> testAskingForTheWinnerWhenTheGameHasNotEndedThrowsAnError
 LaScalonetaGameTest >> testDeckCanNotPickACardWhenItHasNoCardsAsTheSpaceshipsStartsLaScalonetaGameWithTwoCardsEachAndDeckOnlyHasThreeCards [
 
 	| aBoard aDie1 anOverloadCard aDeck |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -87,19 +92,23 @@ LaScalonetaGameTest >> testDeckCanNotPickACardWhenItHasNoCardsAsTheSpaceshipsSta
 				          NoEffect new }
 		          and: (DistanceInParsecs with: 12)
 		          finishingAfter: 2.
-		
+
 	aDie1 := LoadedDie with: 1.
-	
+
 	anOverloadCard := OverloadCard new.
 
-	aDeck := Deck with: {anOverloadCard. anOverloadCard. anOverloadCard. }.
-	
+	aDeck := Deck with: { 
+			         anOverloadCard.
+			         anOverloadCard.
+			         anOverloadCard }.
+
 	self
-		should: [ LaScalonetaGame
-		         playedBy: { 'Jorge'. 'Julian' }
-		         on: aBoard
-		         rolling: aDie1
-		         usingCardsFrom: aDeck. ]
+		should: [ 
+			LaScalonetaGame
+				playedBy: { 'Jorge'. 'Julian' }
+				on: aBoard
+				rolling: aDie1
+				usingCardsFrom: aDeck ]
 		raise: Error
 		withMessage: 'No cards to pick'
 ]
@@ -108,7 +117,6 @@ LaScalonetaGameTest >> testDeckCanNotPickACardWhenItHasNoCardsAsTheSpaceshipsSta
 LaScalonetaGameTest >> testEveryoneGoesBackToTheFirstPositionOnTheSameLapWhenJorgeLandsOnAnAtomicBombEffect [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -152,7 +160,6 @@ LaScalonetaGameTest >> testEveryoneGoesBackToTheFirstPositionOnTheSameLapWhenJor
 LaScalonetaGameTest >> testFinalPositionOfSpaceShipsCorrespondsWithTheActualFinalPositions [
 
 	| aGame aDiceCup aBoard aDie1 aDie2 aDie3 aDeck anAccelerationCard |
-
 	aBoard := Board withNoEffectsOf: 3 and: (DistanceInParsecs with: 3) finishingAfter: 2.
 
 	aDie1 := LoadedDie with: 1.
@@ -191,7 +198,6 @@ LaScalonetaGameTest >> testFinalPositionOfSpaceShipsCorrespondsWithTheActualFina
 LaScalonetaGameTest >> testGameHasEndedAsOneSpaceShipReachedTheEnd [
 
 	| aGame aDiceCup aBoard aDie1 aDie2 aDie3 aDeck anAccelerationCard |
- 
 	aBoard := Board withNoEffectsOf: 3 and: (DistanceInParsecs with: 3) finishingAfter: 2.
 
 	aDie1 := LoadedDie with: 1.
@@ -227,7 +233,11 @@ LaScalonetaGameTest >> testGameHasEndedAsOneSpaceShipReachedTheEnd [
 LaScalonetaGameTest >> testHyperJumpEffecDistancesCanNotContainsNegativeValues [
 
 	self
-		should: [ HyperJumpEffect with: {DistanceInParsecs with: 2. DistanceInParsecs with: -3. DistanceInParsecs with: 3.} ]
+		should: [ 
+			HyperJumpEffect with: { 
+					(DistanceInParsecs with: 2).
+					(DistanceInParsecs with: -3).
+					(DistanceInParsecs with: 3) } ]
 		raise: Error
 		withMessage: 'Parsecs amount should be greater than zero'
 ]
@@ -238,14 +248,14 @@ LaScalonetaGameTest >> testHyperJumpEffectDistancesCanNotBeEmpty [
 	self
 		should: [ HyperJumpEffect with: #(  ) ]
 		raise: Error
-		withMessage: 'HyperJumpEffect can not be initalize with empty collection!'
+		withMessage:
+		'HyperJumpEffect can not be initalize with empty collection!'
 ]
 
 { #category : #'card usage tests' }
 LaScalonetaGameTest >> testJorgeAndJulianMovesFowardThreeTilesButThenAfterJulianApplyACancellationCardToTheAccelerationCardThatJorgeAppliedTheyOnlyMoveFowardTwoTiles [
 
 	| aGame aBoard aDie aCancellationCard anAccelerationCard aDeck cardPlay cardPlay1 |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -269,7 +279,7 @@ LaScalonetaGameTest >> testJorgeAndJulianMovesFowardThreeTilesButThenAfterJulian
 		         rolling: aDie
 		         usingCardsFrom: aDeck.
 		
-	cardPlay := anAccelerationCard playBy: 'Jorge'.  
+	cardPlay := anAccelerationCard playBy: 'Jorge' targetting: aGame spaceShips.  
 	aGame apply: cardPlay.
 	
 	aGame playNextTurn.
@@ -278,7 +288,7 @@ LaScalonetaGameTest >> testJorgeAndJulianMovesFowardThreeTilesButThenAfterJulian
 	self assert: 'Jorge' isAt: 4 with: 1 in: aGame. 
 	self assert: 'Julian' isAt: 4 with: 1 in: aGame. 
 		
-	cardPlay1 := CardPlay with: aCancellationCard appliedTo: anAccelerationCard by: 'Julian'.
+	cardPlay1 := aCancellationCard playBy: 'Julian' targetting: anAccelerationCard.
 	aGame apply: cardPlay1.
 	
 	aGame playNextTurn.
@@ -290,9 +300,8 @@ LaScalonetaGameTest >> testJorgeAndJulianMovesFowardThreeTilesButThenAfterJulian
 
 { #category : #'deck usage tests' }
 LaScalonetaGameTest >> testJorgeCanNotPickACardWhenLandingOnADeliveryEffectAsDiscardDeckIsEmpty [
-	
+
 	| aGame aBoard aDie1 aDie2 aDiceCup aCancellationCard aSpeedCard aDeck |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -302,36 +311,41 @@ LaScalonetaGameTest >> testJorgeCanNotPickACardWhenLandingOnADeliveryEffectAsDis
 				          NoEffect new }
 		          and: (DistanceInParsecs with: 12)
 		          finishingAfter: 2.
-		
+
 	aDie1 := LoadedDie with: 1.
 	aDie2 := LoadedDie with: 1.
 
 	aDiceCup := DiceCup withAll: { 
 			            aDie1.
-			            aDie2}.
-			
+			            aDie2 }.
+
 	aCancellationCard := CancellationCard new.
 	aSpeedCard := SpeedCard new.
-	
-	aDeck := LoadedDeck with: {aCancellationCard. aCancellationCard. aCancellationCard. aCancellationCard. aCancellationCard}.
+
+	aDeck := LoadedDeck with: { 
+			         aCancellationCard.
+			         aCancellationCard.
+			         aCancellationCard.
+			         aCancellationCard.
+			         aCancellationCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDiceCup
 		         usingCardsFrom: aDeck.
-	
+
 	self
-		should: [ aGame playNextTurn. ]
+		should: [ aGame playNextTurn ]
 		raise: Error
-		withMessage: 'It is not possible to pick a card until DiscardDeck it is not empty!'
+		withMessage:
+		'It is not possible to pick a card until DiscardDeck it is not empty!'
 ]
 
 { #category : #'card usage tests' }
 LaScalonetaGameTest >> testJorgeCannotThrowAnAccelerationCardThatHeDoesNotHaveInHisHand [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup anAccelerationCard aSpeedCard aDeck cardPlay |
-
 	anAccelerationCard := AccelerationCard new.
 	
 	aBoard := Board
@@ -366,7 +380,7 @@ LaScalonetaGameTest >> testJorgeCannotThrowAnAccelerationCardThatHeDoesNotHaveIn
 	self assert: 'Jorge' isAt: 1 with: 1 in: aGame. 
 	self assert: 'Julian' isAt: 1 with: 1 in: aGame.
 		
-	cardPlay := anAccelerationCard playBy: 'Jorge'.  
+	cardPlay := anAccelerationCard playBy: 'Jorge' targetting: aGame spaceShips.    
 	
 	self
 		should: [ aGame apply: cardPlay. ]
@@ -405,14 +419,12 @@ LaScalonetaGameTest >> testJorgeCannotThrowanAccelerationCardWhenItIsNotHisTurn 
 	
 	aGame playNextTurn.
 
-	cardPlay := anAccelerationCard playBy: 'Jorge'.  
+	cardPlay := anAccelerationCard playBy: 'Jorge' targetting: aGame spaceShips.    
 	
 	self
 		should: [ aGame apply: cardPlay. ]
 		raise: Error
 		withMessage: 'Its not your turn!'
-	
-	
 
 
 	
@@ -422,7 +434,6 @@ LaScalonetaGameTest >> testJorgeCannotThrowanAccelerationCardWhenItIsNotHisTurn 
 LaScalonetaGameTest >> testJorgeDoesNotMoveFowardAsTheNumberOfParsecsIsNotEnoughToMoveOneTileWhenLandingOnAHypperJumpEffect [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -455,7 +466,6 @@ LaScalonetaGameTest >> testJorgeDoesNotMoveFowardAsTheNumberOfParsecsIsNotEnough
 LaScalonetaGameTest >> testJorgeGetsARepeatCardAndWhenHeThrowsItHeIsApplyingSpeedUpEffect [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aRepeatCard aDeck cardPlay |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -488,7 +498,7 @@ LaScalonetaGameTest >> testJorgeGetsARepeatCardAndWhenHeThrowsItHeIsApplyingSpee
 	
 	self assert: 'Jorge' isAt: 2 with: 2 in: aGame. 
 	
-	cardPlay :=  aRepeatCard playBy: 'Jorge'.
+	cardPlay :=  aRepeatCard playBy: 'Jorge' targetting: aGame spaceShips.  
 	aGame apply: cardPlay.
 	
 	self assert: 'Jorge' isAt: 1 with: 3 in: aGame. 
@@ -531,7 +541,7 @@ LaScalonetaGameTest >> testJorgeGetsAndThrowsAnAccelerationCardAffectingAllSpace
 	self assert: 'Jorge' isAt: 1 with: 1 in: aGame. 
 	self assert: 'Julian' isAt: 1 with: 1 in: aGame.
 	
-	cardPlay := anAccelerationCard playBy: 'Jorge'.  
+	cardPlay := anAccelerationCard playBy: 'Jorge' targetting: aGame spaceShips.  
 	aGame apply: cardPlay.
 	
 	aGame playNextTurn.
@@ -542,7 +552,6 @@ LaScalonetaGameTest >> testJorgeGetsAndThrowsAnAccelerationCardAffectingAllSpace
 	aGame playNextTurn.
 	self assert: 'Jorge' isAt: 4 with: 1 in: aGame.
 	self assert: 'Julian' isAt: 4 with: 1 in: aGame.	
-
 	
 ]
 
@@ -550,7 +559,6 @@ LaScalonetaGameTest >> testJorgeGetsAndThrowsAnAccelerationCardAffectingAllSpace
 LaScalonetaGameTest >> testJorgeGetsAndThrowsAnOverloadCardAffectingJulianSoJuliaStaysAtTheFirstPositionWhenHisRollingResultIsOneAsHeCanNotMoveFurtherBackThanFirstPosition [
 
 	| aGame aBoard aDie1 anOverloadCard aDeck cardPlay |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -589,7 +597,6 @@ LaScalonetaGameTest >> testJorgeGetsAndThrowsAnOverloadCardAffectingJulianSoJuli
 LaScalonetaGameTest >> testJorgeGetsAndThrowsAnOverloadCardAffectingJulianSoJulianMovesOneTileBackwardsWhenHisRollingResultIsOne [
 
 	| aGame aBoard aDie1 anOverloadCard aDeck cardPlay |
-
 	anOverloadCard := OverloadCard new.
 	
 	aBoard := Board
@@ -635,7 +642,6 @@ LaScalonetaGameTest >> testJorgeGetsAndThrowsAnOverloadCardAffectingJulianSoJuli
 LaScalonetaGameTest >> testJorgeGetsAndThrowsAnOverloadCardAffectingJulianSoJulianMovesOneTileFowardWhenHisRollingResultIsThree [
 
 	| aGame aBoard aDie1 anOverloadCard aDeck aDie2 aDiceCup cardPlay |
-
 	anOverloadCard := OverloadCard new.
 	
 	aBoard := Board
@@ -686,8 +692,10 @@ LaScalonetaGameTest >> testJorgeGetsAndThrowsAnOverloadCardAffectingJulianSoJuli
 LaScalonetaGameTest >> testJorgeIsNotTheWinnerOfLaScalonetaGameWhenJulianReachesTheEndFirst [
 
 	| aGame aBoard aDie1 aDiceCup aDie2 aDie3 aDeck anAccelerationCard |
-
-	aBoard := Board withNoEffectsOf: 4 and: (DistanceInLightYears with: 12) finishingAfter: 1.
+	aBoard := Board
+		          withNoEffectsOf: 4
+		          and: (DistanceInLightYears with: 12)
+		          finishingAfter: 1.
 
 	aDie1 := LoadedDie with: 1.
 	aDie2 := LoadedDie with: 1.
@@ -697,10 +705,14 @@ LaScalonetaGameTest >> testJorgeIsNotTheWinnerOfLaScalonetaGameWhenJulianReaches
 			            aDie1.
 			            aDie2.
 			            aDie3 }.
-			
+
 	anAccelerationCard := AccelerationCard new.
 
-	aDeck := Deck with: {anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard}.
+	aDeck := Deck with: { 
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Julian'. 'Jorge' }
@@ -717,15 +729,23 @@ LaScalonetaGameTest >> testJorgeIsNotTheWinnerOfLaScalonetaGameWhenJulianReaches
 LaScalonetaGameTest >> testJorgeIsTheFirstSpaceShipAtSpaceShipsRankingAsHisPositionIsTheClosestToTheGoal [
 
 	| aGame aDiceCup aBoard aDie1 aDeck anAccelerationCard |
-		
-	aBoard := Board withNoEffectsOf: 2 and: (DistanceInLightYears with: 9) finishingAfter: 2.
+	aBoard := Board
+		          withNoEffectsOf: 2
+		          and: (DistanceInLightYears with: 9)
+		          finishingAfter: 2.
 
 	aDie1 := LoadedDie with: 1.
 	aDiceCup := DiceCup withAll: { aDie1 }.
 
 	anAccelerationCard := AccelerationCard new.
 
-	aDeck := Deck with: {anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard}.
+	aDeck := Deck with: { 
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian'. 'Lucas' }
@@ -738,8 +758,12 @@ LaScalonetaGameTest >> testJorgeIsTheFirstSpaceShipAtSpaceShipsRankingAsHisPosit
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	self assert: aGame spaceShipsPositionsRanking first spaceShip equals: 'Jorge'.
-	self assert: aGame spaceShipsPositionsRanking first tileNumber equals: 1.
+	self
+		assert: aGame spaceShipsPositionsRanking first spaceShip
+		equals: 'Jorge'.
+	self
+		assert: aGame spaceShipsPositionsRanking first tileNumber
+		equals: 1.
 	self assert: aGame spaceShipsPositionsRanking first lap equals: 2
 ]
 
@@ -747,7 +771,6 @@ LaScalonetaGameTest >> testJorgeIsTheFirstSpaceShipAtSpaceShipsRankingAsHisPosit
 LaScalonetaGameTest >> testJorgeMovesBackFourTilesWhenLandingOnAWormholeEffect [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -785,7 +808,6 @@ LaScalonetaGameTest >> testJorgeMovesBackFourTilesWhenLandingOnAWormholeEffect [
 LaScalonetaGameTest >> testJorgeMovesBackTwoPositionsAndBacksALapWhenJorgeLandsOnAMoonWalkEffect [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          (MoonWalkEffect with: -2).
@@ -825,7 +847,6 @@ LaScalonetaGameTest >> testJorgeMovesBackTwoPositionsAndBacksALapWhenJorgeLandsO
 LaScalonetaGameTest >> testJorgeMovesForwardFourParsecsWhenLandingOnAHyperJumpEffectWithDistancesEqualsToOneLightYear [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -858,7 +879,6 @@ LaScalonetaGameTest >> testJorgeMovesForwardFourParsecsWhenLandingOnAHyperJumpEf
 LaScalonetaGameTest >> testJorgeMovesForwardFourTilesWhenLandingOnASpeedUpEffect [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -892,7 +912,6 @@ LaScalonetaGameTest >> testJorgeMovesForwardFourTilesWhenLandingOnASpeedUpEffect
 LaScalonetaGameTest >> testJorgeMovesForwardThreeParsecsWhenLandingOnAHyperJumpEffectDistancesEqualsToThreeParsecs [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -924,8 +943,7 @@ LaScalonetaGameTest >> testJorgeMovesForwardThreeParsecsWhenLandingOnAHyperJumpE
 { #category : #'card usage tests' }
 LaScalonetaGameTest >> testJorgeMovesFowardFourTilesAfterApplyingAnAccelerationCardAndASpeedBoostCardToTheSpeedCardAndThenJulianMovesFowardOnlyTwoTilesAsHeIsNotUnderTheEffectOfTheCardsThatHadBeenPlayed [
 	
-	| aGame aBoard aDie aSpeedBoostCard aSpeedCard aDeck cardPlay cardPlay1 |
-	
+	| aGame aBoard aDie aSpeedBoostCard aSpeedCard aDeck cardPlay cardPlay1 |	
 	aBoard := Board withNoEffectsOf: 5 and: (DistanceInParsecs with: 12) finishingAfter: 2.
 		
 	aDie := LoadedDie with: 2.
@@ -958,7 +976,6 @@ LaScalonetaGameTest >> testJorgeMovesFowardFourTilesAfterApplyingAnAccelerationC
 LaScalonetaGameTest >> testJorgeMovesFowardFourTilesButHeDoesNotMoveFowardInHisNextTurnAsHeIsUnderTheEffectOfAnOverloadCardAndASpeedBoostCardThrownByJulian [
 	
 	| aGame aBoard aDie aSpeedBoostCard anOverloadCard aDeck cardPlay cardPlay1 |
-	
 	aBoard := Board withNoEffectsOf: 5 and: (DistanceInParsecs with: 12) finishingAfter: 2.
 		
 	aDie := LoadedDie with: 4.
@@ -996,7 +1013,6 @@ LaScalonetaGameTest >> testJorgeMovesFowardFourTilesButHeDoesNotMoveFowardInHisN
 LaScalonetaGameTest >> testJorgeMovesFowardThreeParsecsAndThenJulianMovesFowardTwoParsecsSinceTheyBothLandedOnAHyperJumpEffectAndThreeAndTwoWhereTheFirstDistancesValues [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -1033,7 +1049,6 @@ LaScalonetaGameTest >> testJorgeMovesFowardThreeParsecsAndThenJulianMovesFowardT
 LaScalonetaGameTest >> testJorgeMovesFowardThreeParsecsThenJulianMovesFowardTwoParsecsAndFinallyHernanMovesFowardThreeParsecsAgainWhenLadingOnAHyperJumpEffectInitializeWithTwoDistancesValues [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -1090,7 +1105,7 @@ LaScalonetaGameTest >> testJorgeMovesFowardThreeTilesAfterApplyingAnAcceleration
 		         rolling: aDie
 		         usingCardsFrom: aDeck.
 	
-	cardPlay := anAccelerationCard playBy: 'Jorge'.
+	cardPlay := anAccelerationCard playBy: 'Jorge' targetting: aGame spaceShips.
 	aGame apply: cardPlay.
 				
 	aGame playNextTurn.
@@ -1108,44 +1123,49 @@ LaScalonetaGameTest >> testJorgeMovesFowardThreeTilesAfterApplyingAnAcceleration
 	
 	self assert: 'Jorge' isAt: 3 with: 2 in: aGame.
 	self assert: 'Julian' isAt: 4 with: 2 in: aGame.
-	
 ]
 
 { #category : #'card usage tests' }
 LaScalonetaGameTest >> testJorgeThrowsOneSpeedCardAndOneAcellerationCardSoWhenHeCanNotToThrowASpeedCardAgainAsHeDoesNotHaveItAnyMore [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard aSpeedCard cardPlay cardPlay1 cardPlay2 |
-
-	aBoard := Board withNoEffectsOf: 4 and: (DistanceInParsecs with: 2) finishingAfter: 2.
+	aBoard := Board
+		          withNoEffectsOf: 4
+		          and: (DistanceInParsecs with: 2)
+		          finishingAfter: 2.
 	aDie1 := LoadedDie with: 1.
-	
+
 	anAccelerationCard := AccelerationCard new.
-	
+
 	aSpeedCard := SpeedCard new.
 
-	aDeck := LoadedDeck with: {anAccelerationCard. aSpeedCard. anAccelerationCard. aSpeedCard}.
+	aDeck := LoadedDeck with: { 
+			         anAccelerationCard.
+			         aSpeedCard.
+			         anAccelerationCard.
+			         aSpeedCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDie1
 		         usingCardsFrom: aDeck.
-	
-	cardPlay := anAccelerationCard playBy: 'Jorge'.
+
+	cardPlay := anAccelerationCard
+		            playBy: 'Jorge'
+		            targetting: aGame spaceShips.
 	aGame apply: cardPlay.
-	
+
 	cardPlay1 := aSpeedCard playBy: 'Jorge' targetting: 'Jorge'.
 	aGame apply: cardPlay1.
-	
-	cardPlay2 := aSpeedCard playBy: 'Jorge' targetting: 'Jorge'.
-	
-	self
-		should: [ aGame apply: cardPlay2. ]
-		raise: Error
-		withMessage: 'The SpaceShip cannot throw this card because he does not have it'
-	
-	
 
+	cardPlay2 := aSpeedCard playBy: 'Jorge' targetting: 'Jorge'.
+
+	self
+		should: [ aGame apply: cardPlay2 ]
+		raise: Error
+		withMessage:
+		'The SpaceShip cannot throw this card because he does not have it'
 ]
 
 { #category : #'card usage tests' }
@@ -1196,9 +1216,11 @@ LaScalonetaGameTest >> testJorgeThrowsTwoSpeedCardsSoWhenHeRollsTheLoadedDieWith
 LaScalonetaGameTest >> testJorgeWinsLaScalonetaGameWhenJorgeReachesTheEndFirst [
 
 	| aGame aBoard aDie1 aDie2 aDie3 aDiceCup aDeck anAccelerationCard |
-	
-	aBoard := Board withNoEffectsOf: 4 and: (DistanceInParsecs with: 4) finishingAfter: 1.
-	
+	aBoard := Board
+		          withNoEffectsOf: 4
+		          and: (DistanceInParsecs with: 4)
+		          finishingAfter: 1.
+
 	aDie1 := LoadedDie with: 1.
 	aDie2 := LoadedDie with: 1.
 	aDie3 := LoadedDie with: 1.
@@ -1210,13 +1232,17 @@ LaScalonetaGameTest >> testJorgeWinsLaScalonetaGameWhenJorgeReachesTheEndFirst [
 
 	anAccelerationCard := AccelerationCard new.
 
-	aDeck := Deck with: {anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard}.
+	aDeck := Deck with: { 
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDiceCup
-					usingCardsFrom: aDeck.
+		         usingCardsFrom: aDeck.
 
 	aGame playNextTurn.
 
@@ -1269,41 +1295,48 @@ LaScalonetaGameTest >> testJulianCancelsASpeedCardWhenIsNotHisTurn [
 	
 	self assert: 'Jorge' isAt: 3 with: 1 in: aGame. 
 	self assert: 'Julian' isAt: 1 with: 1 in: aGame.
-
-
 ]
 
 { #category : #'card usage tests' }
 LaScalonetaGameTest >> testJulianCannotCancelACardThatIsNotAffectingTheGame [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aCancellationCard aSpeedCard aDeck cardPlay1 |
-	
-	aBoard := Board withNoEffectsOf: 5 and: (DistanceInParsecs with: 12) finishingAfter: 2.
-		
+	aBoard := Board
+		          withNoEffectsOf: 5
+		          and: (DistanceInParsecs with: 12)
+		          finishingAfter: 2.
+
 	aDie1 := LoadedDie with: 1.
 	aDie2 := LoadedDie with: 1.
 
 	aDiceCup := DiceCup withAll: { 
 			            aDie1.
-			            aDie2}.
-			
+			            aDie2 }.
+
 	aCancellationCard := CancellationCard new.
 	aSpeedCard := SpeedCard new.
-	
-	aDeck := LoadedDeck with: {aCancellationCard. aCancellationCard. aCancellationCard. aCancellationCard. aCancellationCard}.
+
+	aDeck := LoadedDeck with: { 
+			         aCancellationCard.
+			         aCancellationCard.
+			         aCancellationCard.
+			         aCancellationCard.
+			         aCancellationCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDiceCup
 		         usingCardsFrom: aDeck.
-	
+
 	aGame playNextTurn.
-	
-	cardPlay1 := aCancellationCard playBy: 'Julian' targetting: aSpeedCard.
-	
+
+	cardPlay1 := aCancellationCard
+		             playBy: 'Julian'
+		             targetting: aSpeedCard.
+
 	self
-		should: [ aGame apply: cardPlay1. ]
+		should: [ aGame apply: cardPlay1 ]
 		raise: Error
 		withMessage: 'There is no CardsHand with the card to be removed'
 ]
@@ -1312,7 +1345,6 @@ LaScalonetaGameTest >> testJulianCannotCancelACardThatIsNotAffectingTheGame [
 LaScalonetaGameTest >> testJulianCannotThrowAReDoCardBecauseThereWasNoCardPlayedBefore [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aReDoCard aDeck cardPlay |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -1322,38 +1354,40 @@ LaScalonetaGameTest >> testJulianCannotThrowAReDoCardBecauseThereWasNoCardPlayed
 				          NoEffect new }
 		          and: (DistanceInParsecs with: 12)
 		          finishingAfter: 2.
-		
+
 	aDie1 := LoadedDie with: 1.
 	aDie2 := LoadedDie with: 1.
 
 	aDiceCup := DiceCup withAll: { 
 			            aDie1.
-			            aDie2}.
-			
+			            aDie2 }.
+
 	aReDoCard := ReDoCard new.
-	
-	aDeck := LoadedDeck with: {aReDoCard. aReDoCard. aReDoCard. aReDoCard}.
+
+	aDeck := LoadedDeck with: { 
+			         aReDoCard.
+			         aReDoCard.
+			         aReDoCard.
+			         aReDoCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDiceCup
 		         usingCardsFrom: aDeck.
-		
+
 	cardPlay := aReDoCard playBy: 'Jorge' targetting: 'Jorge'.
 
 	self
-		should: [ aGame apply: cardPlay. ]
+		should: [ aGame apply: cardPlay ]
 		raise: Error
 		withMessage: 'No card played yet!'
-	
 ]
 
 { #category : #'effect usage tests' }
 LaScalonetaGameTest >> testJulianDoesNotGoBackFurtherThanFirstPositionOfFirstLapWhenAffectedByAWormHoleOnSecondPositionOfFirstLap [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -1385,7 +1419,6 @@ LaScalonetaGameTest >> testJulianDoesNotGoBackFurtherThanFirstPositionOfFirstLap
 LaScalonetaGameTest >> testJulianGetsACancellationCardAndGetsRidOfSpeedCard [
 
 	| aGame aBoard aDie aCancellationCard aSpeedCard aDeck cardPlay cardPlay1 |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -1475,31 +1508,31 @@ LaScalonetaGameTest >> testJulianGetsAReDoCardAfterJorgeThrewAnSpeedCardAndPlays
 
 	aGame playNextTurn.
 
-	self
-		assert: 'Jorge'
-		isAt: 4
-		with: 1
-		in: aGame.
+	self assert: 'Jorge' isAt: 4 with: 1 in: aGame.
 
-	self
-		assert: 'Julian'
-		isAt: 4
-		with: 1
-		in: aGame
+	self assert: 'Julian' isAt: 4 with: 1 in: aGame
 ]
 
 { #category : #tests }
 LaScalonetaGameTest >> testJulianIsTheThirdSpaceShipAtSpaceShipsRankingAsHisPositionIsTheThirdClosestToTheGoal [
 
 	| aGame aBoard aDie1 aDeck anAccelerationCard |
-	
-	aBoard := Board withNoEffectsOf: 3 and: (DistanceInParsecs with: 2) finishingAfter: 2.
+	aBoard := Board
+		          withNoEffectsOf: 3
+		          and: (DistanceInParsecs with: 2)
+		          finishingAfter: 2.
 
 	aDie1 := LoadedDie with: 1.
 
 	anAccelerationCard := AccelerationCard new.
 
-	aDeck := Deck with: {anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard. anAccelerationCard}.
+	aDeck := Deck with: { 
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard.
+			         anAccelerationCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian'. 'Lucas' }
@@ -1512,8 +1545,12 @@ LaScalonetaGameTest >> testJulianIsTheThirdSpaceShipAtSpaceShipsRankingAsHisPosi
 	aGame playNextTurn.
 	aGame playNextTurn.
 
-	self assert: aGame spaceShipsPositionsRanking third spaceShip equals: 'Julian'.
-	self assert: aGame spaceShipsPositionsRanking third tileNumber equals: 2.
+	self
+		assert: aGame spaceShipsPositionsRanking third spaceShip
+		equals: 'Julian'.
+	self
+		assert: aGame spaceShipsPositionsRanking third tileNumber
+		equals: 2.
 	self assert: aGame spaceShipsPositionsRanking third lap equals: 1
 ]
 
@@ -1521,7 +1558,6 @@ LaScalonetaGameTest >> testJulianIsTheThirdSpaceShipAtSpaceShipsRankingAsHisPosi
 LaScalonetaGameTest >> testLaScalonetaGameDoesNotThrowAnErrorWhenIsNeededToGiveACardFromDeckAndMainDeckIsEmptyAsRedistributeDecksMessageItIsBeenApplied [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aCancellationCard aSpeedCard aDeck cardPlay |
-	
 	aBoard := Board
 		          with: { 
 				          NoEffect new.
@@ -1531,43 +1567,50 @@ LaScalonetaGameTest >> testLaScalonetaGameDoesNotThrowAnErrorWhenIsNeededToGiveA
 				          NoEffect new }
 		          and: (DistanceInParsecs with: 12)
 		          finishingAfter: 2.
-		
+
 	aDie1 := LoadedDie with: 1.
 	aDie2 := LoadedDie with: 1.
 
 	aDiceCup := DiceCup withAll: { 
 			            aDie1.
-			            aDie2}.
-			
+			            aDie2 }.
+
 	aCancellationCard := CancellationCard new.
 	aSpeedCard := SpeedCard new.
-	
-	aDeck := LoadedDeck with: {aSpeedCard. aCancellationCard. aSpeedCard. aCancellationCard. aSpeedCard}.
+
+	aDeck := LoadedDeck with: { 
+			         aSpeedCard.
+			         aCancellationCard.
+			         aSpeedCard.
+			         aCancellationCard.
+			         aSpeedCard }.
 
 	aGame := LaScalonetaGame
 		         playedBy: { 'Jorge'. 'Julian' }
 		         on: aBoard
 		         rolling: aDiceCup
 		         usingCardsFrom: aDeck.
-	
+
 	cardPlay := aSpeedCard playBy: 'Jorge' targetting: 'Julian'.
 	aGame apply: cardPlay.
-	
-	aGame playNextTurn.
+
+	aGame playNextTurn
 ]
 
 { #category : #tests }
 LaScalonetaGameTest >> testLaScalonetaGameMustHaveAtLeastOneSpaceShip [
 
 	| aBoard aDie1 aDeck anAccelerationCard |
-	
-	aBoard := Board withNoEffectsOf: 3 and: (DistanceInParsecs with: 3) finishingAfter: 2.
-	
+	aBoard := Board
+		          withNoEffectsOf: 3
+		          and: (DistanceInParsecs with: 3)
+		          finishingAfter: 2.
+
 	aDie1 := LoadedDie with: 1.
-	
+
 	anAccelerationCard := AccelerationCard new.
 
-	aDeck := Deck with: {anAccelerationCard}.
+	aDeck := Deck with: { anAccelerationCard }.
 
 	self
 		should: [ 
@@ -1593,7 +1636,6 @@ LaScalonetaGameTest >> testLaScalonetaGameMustHaveOneOrMoreLaps [
 LaScalonetaGameTest >> testLaScalonetaGamePlayedWithRandomBoardRandomDieAndDeck [
 
 	| tilesCollection board aGame pool aDie1 aDie2 aDiceCup aDeck cardsPool cardsCollection |
-	
 	pool := Pool with: { 
 			        (ProbabilisticEvent with: NoEffect new and: 0.40).
 			        (ProbabilisticEvent
@@ -1608,9 +1650,12 @@ LaScalonetaGameTest >> testLaScalonetaGamePlayedWithRandomBoardRandomDieAndDeck 
 			        (ProbabilisticEvent with: AtomicBombEffect new and: 0.02).
 			        (ProbabilisticEvent with: WormHoleEffect new and: 0.2).
 			        (ProbabilisticEvent with: SpeedUpEffect new and: 0.2) }.
-			
+
 	tilesCollection := pool randomCollectionWith: 5.
-	board := Board with: tilesCollection and: (DistanceInParsecs with: 2) finishingAfter: 2.
+	board := Board
+		         with: tilesCollection
+		         and: (DistanceInParsecs with: 2)
+		         finishingAfter: 2.
 
 	aDie1 := RandomDie with: 3.
 	aDie2 := RandomDie with: 4.
@@ -1622,7 +1667,9 @@ LaScalonetaGameTest >> testLaScalonetaGamePlayedWithRandomBoardRandomDieAndDeck 
 			             (ProbabilisticEvent with: SpeedCard new and: 0.20).
 			             (ProbabilisticEvent with: OverloadCard new and: 0.20).
 			             (ProbabilisticEvent with: SpeedBoostCard new and: 0.20).
-			             (ProbabilisticEvent with: AccelerationCard new and: 0.20).
+			             (ProbabilisticEvent
+				              with: AccelerationCard new
+				              and: 0.20).
 			             (ProbabilisticEvent with: ReDoCard new and: 0.10).
 			             (ProbabilisticEvent with: RepeatCard new and: 0.10) }.
 
@@ -1687,7 +1734,6 @@ LaScalonetaGameTest >> testPlayingAfterWinningIsNotAllowed [
 LaScalonetaGameTest >> testSpaceShipMovesThreeTilesFowardWhenRollingResultEqualsToThree [
 
 	| aGame aBoard aDie1 aDie2 aDiceCup aDeck anAccelerationCard |
-	
 	aBoard := Board withNoEffectsOf: 4 and: (DistanceInParsecs with: 4) finishingAfter: 2.
 	aDie1 := LoadedDie with: 2.
 	aDie2 := LoadedDie with: 1.
@@ -1722,9 +1768,11 @@ LaScalonetaGameTest >> testSpaceShipStartsAtTileNumberOneAndLapNumberOne [
 { #category : #'card usage tests' }
 LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToACancellationCard [
 
-	| aGame aBoard aDie aSpeedBoostCard aCancellationCard aDeck cardPlay |.
-
-	aBoard := Board withNoEffectsOf: 5 and: (DistanceInParsecs with: 12) finishingAfter: 2.
+	| aGame aBoard aDie aSpeedBoostCard aCancellationCard aDeck cardPlay |
+	aBoard := Board
+		          withNoEffectsOf: 5
+		          and: (DistanceInParsecs with: 12)
+		          finishingAfter: 2.
 	aDie := LoadedDie with: 2.
 
 	aSpeedBoostCard := SpeedBoostCard new.
@@ -1742,7 +1790,9 @@ LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToACancellationCard [
 		         rolling: aDie
 		         usingCardsFrom: aDeck.
 
-	cardPlay := aSpeedBoostCard playBy: 'Julian' targetting: aCancellationCard.
+	cardPlay := aSpeedBoostCard
+		            playBy: 'Julian'
+		            targetting: aCancellationCard.
 
 	self
 		should: [ aGame apply: cardPlay ]
@@ -1755,8 +1805,10 @@ LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToACancellationCard [
 LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToAReDoCard [
 
 	| aGame aBoard aDie aSpeedBoostCard aReDoCard aDeck cardPlay |
-	
-	aBoard := Board withNoEffectsOf: 5 and: (DistanceInParsecs with: 12) finishingAfter: 2.
+	aBoard := Board
+		          withNoEffectsOf: 5
+		          and: (DistanceInParsecs with: 12)
+		          finishingAfter: 2.
 	aDie := LoadedDie with: 2.
 
 	aSpeedBoostCard := SpeedBoostCard new.
@@ -1774,7 +1826,7 @@ LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToAReDoCard [
 		         rolling: aDie
 		         usingCardsFrom: aDeck.
 
-	cardPlay := aSpeedBoostCard playBy: 'Julian' targetting: aReDoCard .
+	cardPlay := aSpeedBoostCard playBy: 'Julian' targetting: aReDoCard.
 
 	self
 		should: [ aGame apply: cardPlay ]
@@ -1787,8 +1839,10 @@ LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToAReDoCard [
 LaScalonetaGameTest >> testSpeedBoostCardCanNotBeApplyToARepeatCard [
 
 	| aGame aBoard aDie aSpeedBoostCard aRepeatCard aDeck cardPlay |
-
-	aBoard := Board withNoEffectsOf: 5 and: (DistanceInParsecs with: 12) finishingAfter: 2.
+	aBoard := Board
+		          withNoEffectsOf: 5
+		          and: (DistanceInParsecs with: 12)
+		          finishingAfter: 2.
 	aDie := LoadedDie with: 2.
 
 	aSpeedBoostCard := SpeedBoostCard new.

@@ -33,10 +33,9 @@ HyperJumpEffect class >> with: aDistanceSequence [
 HyperJumpEffect >> applyTo: aSpaceShips for: aGame [
 
 	| value valueInParsecs |
-	value := distancies first.
+	value := distancies firstValue.
 
-	distancies := (distancies reject: [ :each | each = value ])
-	              , { value }.
+	distancies next.
 
 	valueInParsecs := value valueAsParsec.
 
@@ -48,5 +47,5 @@ HyperJumpEffect >> applyTo: aSpaceShips for: aGame [
 { #category : #initialization }
 HyperJumpEffect >> initializeWith: aDistanceSequence [
 
-	distancies := aDistanceSequence sorted reverse
+	distancies := Sequence with: aDistanceSequence sorted reverse
 ]

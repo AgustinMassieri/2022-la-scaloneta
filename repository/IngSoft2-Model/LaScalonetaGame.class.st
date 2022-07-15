@@ -55,7 +55,7 @@ LaScalonetaGame >> applyEffectDependingOnWhetherTheSpaceShipWonOrNot: aSpaceShip
 LaScalonetaGame >> applyTileEffectTo: aSpaceShips [
 
 	lastTilePlayed := board effectAt:
-		                  (self positionOf: turnsSequence spaceShipPlaying).
+		                  (self positionOf: turnsSequence firstValue).
 	lastTilePlayed applyTo: aSpaceShips for: self
 ]
 
@@ -69,7 +69,8 @@ LaScalonetaGame >> assertGameHasNotEnded [
 { #category : #asserting }
 LaScalonetaGame >> assertIsTurnOf: aSpaceShip [
 
-	^ turnsSequence assertSpaceShipTurn: aSpaceShip
+	(turnsSequence assertValueIsTheFirstOne: aSpaceShip) ifFalse: [ 
+		Error signal: 'Its not your turn!' ]
 ]
 
 { #category : #accessing }
@@ -119,17 +120,17 @@ LaScalonetaGame >> initializeWith: aBoard rolling: aDiceCollection playedBy: aSp
 	diceCollection := aDiceCollection.
 	hasEnded := false.
 	spaceShipPositions := board startingPositionsForAll: aSpaceShips.
-	turnsSequence := TurnsSequence with: aSpaceShips.
+	lastTilePlayed := NoEffect new.
+	turnsSequence := Sequence with: aSpaceShips.
 	discardDeck := OrderedCollection new.
 	mainDeck := aDeck.
 	cardHands := aSpaceShips collect: [ :spaceShip | 
 		             CardsHand with: spaceShip using: aDeck ].
-	lastTilePlayed := NoEffect new.
 	cardPlayResolver := CardPlayResolver with: self
 ]
 
 { #category : #accessing }
-LaScalonetaGame >> lastTilePlayed [
+LaScalonetaGame >> lastTilePlayed [ 
 
 	^ lastTilePlayed
 ]
@@ -155,14 +156,14 @@ LaScalonetaGame >> moveToFirstPositionOnSameLap: aSpaceShip [
 { #category : #playing }
 LaScalonetaGame >> playNextTurn [
 
-	self playTurnFor: turnsSequence spaceShipPlaying
+	self playTurnFor: turnsSequence firstValue
 ]
 
 { #category : #private }
 LaScalonetaGame >> playTurnFor: aSpaceShip [
 
 	| rollingResult distance rollModifier |
-	turnsSequence assertSpaceShipTurn: aSpaceShip.
+	turnsSequence assertValueIsTheFirstOne: aSpaceShip.
 	self assertGameHasNotEnded.
 	rollingResult := diceCollection roll.
 	rollModifier := self rollModifierFor: aSpaceShip.

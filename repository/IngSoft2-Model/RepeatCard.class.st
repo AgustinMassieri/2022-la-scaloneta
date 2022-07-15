@@ -11,7 +11,7 @@ RepeatCard >> accept: aVisitor [
 ]
 
 { #category : #creating }
-RepeatCard >> playBy: aSpaceShip [
+RepeatCard >> playBy: aSpaceShip targetting: spaceShips [
 
-	^ CardPlay with: self appliedBy: aSpaceShip.
+	^ CardPlay with: self appliedTo: spaceShips by: aSpaceShip
 ]
