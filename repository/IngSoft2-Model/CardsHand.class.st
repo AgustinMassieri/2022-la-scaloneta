@@ -58,8 +58,7 @@ CardsHand >> initializeWith: aSpaceShip using: aDeck [
 { #category : #action }
 CardsHand >> removeEffectOf: aCard [
 
-	cardsAffecting := cardsAffecting reject: [ :each | 
-		                  each = aCard ]
+	cardsAffecting := cardsAffecting reject: [ :each | each = aCard ]
 ]
 
 { #category : #action }

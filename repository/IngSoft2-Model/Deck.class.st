@@ -37,9 +37,7 @@ Deck >> isEmpty [
 Deck >> pick [
 
 	| cardToPick |
-	cardToPick := cards
-		              at: 1
-		              ifAbsent: [ Error signal: 'No cards to pick' ].
+	cardToPick := cards at: 1 ifAbsent: [ Error signal: 'No cards to pick' ].
 	cards remove: cardToPick.
 	^ cardToPick
 ]

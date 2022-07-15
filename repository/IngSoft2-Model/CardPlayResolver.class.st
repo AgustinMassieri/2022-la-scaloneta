@@ -58,7 +58,6 @@ CardPlayResolver >> validateTargetIsAPermanentCard: aCard [
 CardPlayResolver >> visitAsACancellationCardPlay [
 
 	| filteredCardsHandsCollection playedBy target card |
-	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
@@ -77,7 +76,6 @@ CardPlayResolver >> visitAsACancellationCardPlay [
 CardPlayResolver >> visitAsAReDoCardPlay [
 
 	| newCardPlay playedBy target card |
-	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
@@ -95,7 +93,6 @@ CardPlayResolver >> visitAsAReDoCardPlay [
 CardPlayResolver >> visitAsARepeatCardPlay [
 
 	| playedBy card |
-	
 	playedBy := cardPlay playedBy.
 	card := cardPlay card.
 
@@ -109,7 +106,6 @@ CardPlayResolver >> visitAsARepeatCardPlay [
 CardPlayResolver >> visitAsASpeedBoostCardPlay [
 
 	| playedBy target card filteredCardsHandsCollection |
-	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
@@ -122,7 +118,7 @@ CardPlayResolver >> visitAsASpeedBoostCardPlay [
 
 	filteredCardsHandsCollection do: [ :cardsHand | 
 		cardsHand addEffectOf: target ].
-	
+
 	game removeFromHand: card to: playedBy
 ]
 
@@ -130,7 +126,6 @@ CardPlayResolver >> visitAsASpeedBoostCardPlay [
 CardPlayResolver >> visitAsASpeedCardPlay [
 
 	| playedBy target card |
-	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
@@ -146,7 +141,6 @@ CardPlayResolver >> visitAsASpeedCardPlay [
 CardPlayResolver >> visitAsAnAccelerationCardPlay [
 
 	| playedBy card |
-	
 	playedBy := cardPlay playedBy.
 	card := cardPlay card.
 
@@ -162,7 +156,6 @@ CardPlayResolver >> visitAsAnAccelerationCardPlay [
 CardPlayResolver >> visitAsAnOverloadCardPlay [
 
 	| playedBy target card |
-	
 	playedBy := cardPlay playedBy.
 	target := cardPlay target.
 	card := cardPlay card.
